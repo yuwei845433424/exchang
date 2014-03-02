@@ -1,0 +1,135 @@
+<!DOCTYPE html PUBLIC >
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+<title>听雨以物换物活动主页</title> 
+<link rel="stylesheet" href="../static/css/thickbox.css" media='screen'/>
+<link rel='stylesheet' href='../static/css/style.css' media='screen' />
+
+<script src="../static/js/jquery.min.js"></script>
+<script src="../static/js/thickbox-compressed.js"></script>
+<script src="../static/js/main.js"></script>
+<script src="../static/js/blocksit.js"></script>
+</head>
+<body >
+
+<!-- Header -->
+
+<header id="header">
+			<hgroup>
+				<h1 id="site-logo">
+					<img src="../static/logo.png">
+				</h1>
+				<div id="login"  align="right">
+					{% if name %}
+                   <h2>Hello {{ name }}!</h2>
+                   <a href="#" id="logout" onclick="onLogout()" style="position:relative;right:20px"><u>退出</u></a>
+                    <a id="login_button" href="#TB_inline?height=155&width=300&inlineId=alert_upload" class="thickbox"  style="position:relative;"><u>上传物品及信息</u></a>
+                   {% else %}
+                   <a id="login_button" href="#TB_inline?height=155&width=300&inlineId=alert_login" class="thickbox" style="position:relative;right:20px;"><u>登录</u></a> 
+                   {% endif %}
+                    <a href="#" style="position:relative;top:0px;display:none" ><u>注册</u></a>
+                </div>
+			</hgroup>
+         <!--弹出层开始 -->	
+ <div id="alert_login" style="display:none">    
+ 	<form >
+		帐号: <input type="text" id="username" name="username" /><br>
+		密码: <input type="text" id="password" name="password" />
+		<input type="button" value="登录" onclick="onSubmit()" />
+	</form>
+</div><div id="alert_upload" style="display:none">    
+ 	<form enctype="multipart/form-data" action="upload" method="post">
+		物品信息(必填): <input type="text" id = "things" name="things"  /><br>
+		交换意愿(选填): <input type="text" id = "will" name="will"  /><br>
+		联系方式(必填): <input type="text" id = "contact" name="contact" /><br>
+		上传图片(必填): <input type="file" id = "files" name="files"  />
+		<input type="submit" value="提交" onclick="upload()"/>
+	</form>
+</div>
+
+<!--弹出层结束 -->
+		
+		</header>
+<!-- Content -->
+<section id="wrapper">
+	<hgroup>
+		<h2>听雨以物换物活动主页</h2> 
+		<h3></h3>
+	</hgroup>
+<div id="container">
+	
+	
+</div>
+</section>
+
+<footer id="footer">
+	<span>&copy; 2013 <a href="http://www.jnrain.com">JNRain</a>. Design by <a href="https://github.com/jnrainerds">江南听雨研发中心</a></span>
+</footer>
+
+<script type="text/javascript">
+ function onSubmit(){
+ 	var username = $("#username").val();
+ 	//deal with the situation of null or blank 
+ 	if(username == null || username == ""){
+ 		alert("用户名为空,请输入后在提交");
+ 		return;
+ 	}
+    var password = $("#password").val();
+    if(password == null || password == ""){
+    	alert("密码为空,请输入后在提交");
+    	return;
+    }
+ 	$.ajax({
+ 		url: 'login',
+ 		type: 'POST',
+ 		async:'false',
+ 		dataType: 'text',
+ 		data: {"username":username,"password":password },
+ 		success:function(data){
+ 			if(data == "error"){
+ 				alert("用户名或密码输入错误，请重新输入");
+ 			    return;
+ 			}
+ 			window.location.reload(); 
+ 		},
+		error:function() {
+
+		}
+ 	})
+ }
+
+ function onLogout(){
+ 	$.ajax({
+ 		url: 'logout',
+ 		type: 'GET',
+ 		async:'false',
+ 		dataType: 'text',
+ 		success:function(){
+ 			window.location.reload();
+ 		},
+		error:function() {
+
+		}
+ 	})
+ }
+ function upload(){
+ 	var things = $("#things").val();
+ 	//deal with the situation of null or blank 
+ 	if(things == null || things == ""){
+ 		alert("物品信息为空,请输入后在提交");
+ 		return;
+ 	}
+    var contact = $("#contact").val();
+    if(contact == null || contact == ""){
+    	alert("联系方式为空,请输入后在提交");
+    	return;
+    }
+ }
+
+
+</script>
+
+</body>
+</html>
